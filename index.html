@@ -1,0 +1,394 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <title>EcoFinds - Marketplace</title>
+    <script src="https://cdn.tailwindcss.com"></script>
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.5.0/css/all.min.css">
+    <style>
+        body {
+            font-family: 'Inter', sans-serif;
+            background: #f9fafb;
+        }
+        .header{background:#4f46e5;color:white;padding:1rem 2rem;display:flex;justify-content:space-between;align-items:center;position:sticky;top:0;z-index:100;box-shadow:0 2px 4px rgba(0,0,0,0.1)}.logo{font-size:1.5rem;font-weight:700;cursor:pointer}.search-box{flex:1;margin:0 2rem;display:flex}.search-box input{flex:1;padding:.5rem 1rem;border-radius:20px 0 0 20px;border:none;outline:none;transition:box-shadow .2s}.search-box input:focus{box-shadow:0 0 0 2px #10b981}.search-box button{padding:0 .8rem;border:none;background:#10b981;color:white;font-size:1rem;border-radius:0 20px 20px 0;cursor:pointer;transition:background .2s}.search-box button:hover{background:#059669}.actions{display:flex;align-items:center;gap:1.5rem}.actions a{cursor:pointer;font-size:1rem;font-weight:600}.hero{background:#4f46e5;color:white;padding:4rem 2rem;text-align:center}.hero h1{font-size:3rem;font-weight:800;margin-bottom:.5rem}.hero p{font-size:1.25rem;font-weight:300}.categories{display:flex;gap:1rem;padding:1rem 2rem;overflow-x:auto;background:#f3f4f6;border-bottom:1px solid #e5e7eb}.cat-btn{padding:.6rem 1.2rem;border-radius:9999px;border:1px solid #4f46e5;background:#fff;cursor:pointer;font-weight:600;transition:background .2s,color .2s;white-space:nowrap}.cat-btn:hover,.cat-btn.active{background:#4f46e5;color:#fff}.grid{display:grid;grid-template-columns:repeat(auto-fill,minmax(240px,1fr));gap:1.5rem;padding:2rem}.card{background:#fff;border-radius:12px;overflow:hidden;box-shadow:0 4px 12px rgba(0,0,0,0.1);transition:transform .2s,box-shadow .2s;cursor:pointer}.card:hover{transform:translateY(-5px);box-shadow:0 8px 20px rgba(0,0,0,0.15)}.card img{width:100%;height:180px;object-fit:cover}.card-body{padding:1rem}.card-body h3{margin:.2rem 0;font-size:1.1rem;font-weight:600}.price{color:#10b981;font-weight:700;margin:.5rem 0;font-size:1.25rem}.modal{display:none;position:fixed;top:0;left:0;width:100%;height:100%;background:rgba(0,0,0,0.6);justify-content:center;align-items:center;z-index:200}.modal-content{background:#fff;padding:2rem;border-radius:12px;width:90%;max-width:600px;max-height:90%;overflow:auto;position:relative}.close{position:absolute;top:10px;right:15px;font-size:1.5rem;cursor:pointer;color:#6b7280}.close:hover{color:#1f2937}.modal-actions{display:flex;justify-content:flex-end;gap:1rem;margin-top:1.5rem}.buy-btn,.cancel-btn,.back-btn{padding:.75rem 1.5rem;border-radius:8px;font-weight:600;cursor:pointer;transition:background .2s}.buy-btn{background:#10b981;color:white;border:none}.buy-btn:hover{background:#059669}.cancel-btn,.back-btn{background:#ef4444;color:white;border:none}.cancel-btn:hover,.back-btn:hover{background:#dc2626}.price-bot-btn{position:fixed;bottom:20px;right:20px;background:#4f46e5;color:white;border:none;padding:15px;border-radius:50%;cursor:pointer;box-shadow:0 4px 10px rgba(0,0,0,0.2);transition:transform .3s;z-index:150}.price-bot-btn:hover{background:#3730a3;transform:scale(1.1)}.pricebot-modal{display:none;position:fixed;top:0;left:0;width:100%;height:100%;background:rgba(0,0,0,0.7);justify-content:center;align-items:center;z-index:300}.pricebot-content{background:white;width:90%;max-width:700px;height:90vh;border-radius:12px;overflow:hidden;position:relative;display:flex;flex-direction:column}.pricebot-header{background:#2563eb;color:white;padding:1rem;display:flex;justify-content:space-between;align-items:center}.pricebot-header h2{font-size:1.25rem;font-weight:600}.pricebot-close{cursor:pointer;font-size:1.5rem}.chat-container{flex:1;overflow-y:auto;padding:1rem;background:#f9fafb;display:flex;flex-direction:column;gap:.5rem}.chat-bubble{padding:.75rem 1rem;border-radius:10px;margin:.5rem 0;max-width:75%}.bot-msg{background:#e5e7eb;color:#111;align-self:flex-start}.user-msg{background:#4f46e5;color:white;align-self:flex-end}.pricebot-input{display:flex;gap:.5rem;padding:.75rem;border-top:1px solid #ddd;background:#f3f4f6}.pricebot-input input{flex:1;padding:.5rem 1rem;border:1px solid #ccc;border-radius:8px}.pricebot-input button{background:#2563eb;color:white;padding:.5rem 1rem;border:none;border-radius:8px;cursor:pointer;transition:background .2s}.pricebot-input button:hover{background:#1d4ed8}.form-group{margin-bottom:1rem}.form-group label{display:block;font-weight:600;margin-bottom:.5rem}.form-group input,.form-group textarea{width:100%;padding:.5rem;border:1px solid #d1d5db;border-radius:8px}.form-group input:focus,.form-group textarea:focus{outline:none;border-color:#4f46e5}
+    </style>
+</head>
+
+<body>
+    <!-- Header -->
+    <div class="header">
+        <div class="logo">EcoFinds</div>
+        <div class="search-box">
+            <input type="text" id="search" placeholder="Search products...">
+            <button onclick="searchProducts()">Search</button>
+        </div>
+        <div class="actions">
+            <a href="#" onclick="openSellModal()">Sell</a>
+            <a href="#">Account</a>
+            <a href="#">Cart <i class="fas fa-shopping-cart"></i></a>
+        </div>
+    </div>
+
+    <!-- Hero Section -->
+    <div class="hero">
+        <h1>Find Your Treasure, Locally.</h1>
+        <p>A marketplace for secondhand goods and eco-friendly finds.</p>
+    </div>
+
+    <!-- Categories -->
+    <div class="categories" id="categories"></div>
+
+    <!-- Product Grid -->
+    <div class="grid" id="productGrid"></div>
+
+    <!-- Product Details Modal -->
+    <div id="modal" class="modal">
+        <div class="modal-content">
+            <span class="close" onclick="closeModal()">&times;</span>
+            <h2 id="modalTitle"></h2>
+            <p class="price" id="modalPrice"></p>
+            <p id="modalDesc"></p>
+            <div id="modalImages" class="flex flex-col gap-2 mb-4"></div>
+            <div class="modal-actions">
+                <button class="back-btn" onclick="closeModal()">Back</button>
+                <button class="buy-btn" onclick="openCheckoutModal()">Buy</button>
+            </div>
+        </div>
+    </div>
+
+    <!-- Checkout Modal -->
+    <div id="checkoutModal" class="modal">
+        <div class="modal-content">
+            <span class="close" onclick="closeCheckoutModal()">&times;</span>
+            <h2 class="text-2xl font-bold mb-4">Checkout</h2>
+            <form id="checkoutForm">
+                <div class="form-group">
+                    <label for="name">Full Name</label>
+                    <input type="text" id="name" name="name" required>
+                </div>
+                <div class="form-group">
+                    <label for="address">Address</label>
+                    <input type="text" id="address" name="address" required>
+                </div>
+                <div class="form-group">
+                    <label for="city">City</label>
+                    <input type="text" id="city" name="city" required>
+                </div>
+                <div class="form-group">
+                    <label for="pincode">Pincode</label>
+                    <input type="text" id="pincode" name="pincode" required>
+                </div>
+                <div class="modal-actions">
+                    <button type="button" class="cancel-btn" onclick="closeCheckoutModal()">Cancel</button>
+                    <button type="submit" class="buy-btn">Place Order</button>
+                </div>
+            </form>
+        </div>
+    </div>
+
+    <!-- Sell Item Modal -->
+    <div id="sellModal" class="modal">
+        <div class="modal-content">
+            <span class="close" onclick="closeSellModal()">&times;</span>
+            <h2 class="text-2xl font-bold mb-4">List Your Item</h2>
+            <form id="sellForm">
+                <div class="form-group">
+                    <label for="sellTitle">Product Title</label>
+                    <input type="text" id="sellTitle" required>
+                </div>
+                <div class="form-group">
+                    <label for="sellCategory">Category</label>
+                    <input type="text" id="sellCategory" required>
+                </div>
+                <div class="form-group">
+                    <label for="sellPrice">Price (₹)</label>
+                    <input type="number" id="sellPrice" required>
+                </div>
+                <div class="form-group">
+                    <label for="sellDescription">Detailed Description</label>
+                    <textarea id="sellDescription" rows="3" required></textarea>
+                </div>
+                <div class="form-group">
+                    <label for="sellImage">Main Image URL</label>
+                    <input type="url" id="sellImage" required>
+                </div>
+                <div class="modal-actions">
+                    <button type="button" class="cancel-btn" onclick="closeSellModal()">Cancel</button>
+                    <button type="submit" class="buy-btn">List Item</button>
+                </div>
+            </form>
+        </div>
+    </div>
+
+    <!-- Floating Price Bot Button -->
+    <button class="price-bot-btn" onclick="openPriceBot()">
+        <i class="fas fa-robot"></i>
+    </button>
+
+    <!-- Price Bot Modal -->
+    <div id="pricebotModal" class="pricebot-modal">
+        <div class="pricebot-content">
+            <div class="pricebot-header">
+                <h2>EcoFinds Price Bot</h2>
+                <span class="pricebot-close" onclick="closePriceBot()">&times;</span>
+            </div>
+            <div id="chat" class="chat-container"></div>
+            <div class="pricebot-input">
+                <input type="text" id="botInput" placeholder="Type a product name...">
+                <button id="sendBtn">Send</button>
+            </div>
+        </div>
+    </div>
+
+    <!-- ADD FIREBASE SDKs -->
+    <script type="module">
+        // Import the functions you need from the SDKs you need
+        import { initializeApp } from "https://www.gstatic.com/firebasejs/10.12.2/firebase-app.js";
+        // UPDATED: Added doc and deleteDoc for buying functionality
+        import { getFirestore, collection, getDocs, addDoc, doc, deleteDoc } from "https://www.gstatic.com/firebasejs/10.12.2/firebase-firestore.js";
+
+        // Your web app's Firebase configuration
+        const firebaseConfig = {
+          apiKey: "AIzaSyCX9kVujPJUM34xeWNQ1ciUfnVrcqc26ew",
+          authDomain: "hackathon-nmit-demigods.firebaseapp.com",
+          projectId: "hackathon-nmit-demigods",
+          storageBucket: "hackathon-nmit-demigods.appspot.com",
+          messagingSenderId: "772039329769",
+          appId: "1:772039329769:web:ff26e864d64981ffcaed78",
+          measurementId: "G-40WX1C0G9B"
+        };
+
+        // Initialize Firebase
+        const app = initializeApp(firebaseConfig);
+        const db = getFirestore(app);
+
+        // ==== PRODUCT DATA AND SITE LOGIC (NOW WITH FIREBASE!) ====
+        let products = []; // This will be filled from Firestore
+        let currentProduct = null;
+        let categories = [];
+
+        const grid = document.getElementById("productGrid");
+        const modal = document.getElementById("modal");
+        const checkoutModal = document.getElementById("checkoutModal");
+        const sellModal = document.getElementById("sellModal");
+        const modalTitle = document.getElementById("modalTitle");
+        const modalPrice = document.getElementById("modalPrice");
+        const modalDesc = document.getElementById("modalDesc");
+        const modalImages = document.getElementById("modalImages");
+        const catContainer = document.getElementById("categories");
+
+        // --- FETCH PRODUCTS FROM FIRESTORE ---
+        async function fetchProducts() {
+            try {
+                const productsCol = collection(db, 'products');
+                const productSnapshot = await getDocs(productsCol);
+                products = productSnapshot.docs.map(doc => ({ id: doc.id, ...doc.data() }));
+                
+                // Once data is fetched, render the page
+                updateCategories();
+                renderProducts(products);
+                const allButton = document.querySelector(".cat-btn");
+                if (allButton) {
+                    allButton.classList.add("active");
+                }
+            } catch (error) {
+                console.error("Error fetching products:", error);
+                alert("Could not load products. Please check your connection or Firebase setup.");
+            }
+        }
+
+        function updateCategories() {
+            categories = ["All", ...new Set(products.map(p => p.category))];
+            catContainer.innerHTML = categories.map(c => <button class="cat-btn" onclick="filterCategory(this, '${c}')">${c}</button>).join('');
+        }
+
+        function renderProducts(list) {
+            grid.innerHTML = list.map(p => `
+                <div class="card" onclick="showDetails('${p.id}')">
+                    <img src="${p.image}" alt="${p.title}" onerror="this.onerror=null;this.src='https://placehold.co/400x400/e2e8f0/475569?text=Image+Not+Found';">
+                    <div class="card-body">
+                        <h3>${p.title}</h3>
+                        <p class="price">₹${p.price.toLocaleString('en-IN')}</p>
+                    </div>
+                </div>
+            `).join('');
+        }
+
+        window.filterCategory = (element, cat) => {
+            document.querySelectorAll(".cat-btn").forEach(b => b.classList.remove("active"));
+            element.classList.add("active");
+            if (cat === "All") {
+                renderProducts(products);
+            } else {
+                renderProducts(products.filter(p => p.category === cat));
+            }
+        }
+
+        window.showDetails = (id) => {
+            currentProduct = products.find(x => x.id === id);
+            if (!currentProduct) return;
+            modalTitle.textContent = currentProduct.title;
+            modalPrice.textContent = "₹" + currentProduct.price.toLocaleString('en-IN');
+            modalDesc.textContent = currentProduct.details;
+            modalImages.innerHTML = (currentProduct.images || [currentProduct.image]).map(img => <img src="${img}" class="rounded-lg mb-2 w-full" onerror="this.onerror=null;this.src='https://placehold.co/600x400/e2e8f0/475569?text=Image+Not+Found';">).join('');
+            modal.style.display = "flex";
+        }
+
+        window.closeModal = () => modal.style.display = "none";
+        window.openCheckoutModal = () => {
+            closeModal();
+            checkoutModal.style.display = "flex";
+        };
+        window.closeCheckoutModal = () => checkoutModal.style.display = "none";
+        window.openSellModal = () => sellModal.style.display = "flex";
+        window.closeSellModal = () => sellModal.style.display = "none";
+
+        // --- UPDATED: HANDLE THE PURCHASE ---
+        document.getElementById('checkoutForm').addEventListener('submit', async (e) => {
+            e.preventDefault();
+            
+            const buyerInfo = {
+                name: document.getElementById('name').value,
+                address: document.getElementById('address').value,
+                city: document.getElementById('city').value,
+                pincode: document.getElementById('pincode').value
+            };
+
+            const orderData = {
+                buyer: buyerInfo,
+                product: currentProduct,
+                orderDate: new Date().toISOString()
+            };
+
+            try {
+                // 1. Save the order to the 'orders' collection
+                await addDoc(collection(db, "orders"), orderData);
+
+                // 2. Delete the product from the 'products' collection
+                await deleteDoc(doc(db, "products", currentProduct.id));
+
+                alert(Thank you for your purchase, ${buyerInfo.name}! Your order for the "${currentProduct.title}" has been placed.);
+                
+                closeCheckoutModal();
+                document.getElementById('checkoutForm').reset();
+                
+                // 3. Refresh the product list on the page
+                fetchProducts(); 
+            } catch (error) {
+                console.error("Error processing order: ", error);
+                alert("Sorry, there was an error placing your order. Please try again.");
+            }
+        });
+
+        // --- SAVE NEW PRODUCT TO FIRESTORE ---
+        document.getElementById('sellForm').addEventListener('submit', async (e) => {
+            e.preventDefault();
+            const newProduct = {
+                title: document.getElementById('sellTitle').value,
+                category: document.getElementById('sellCategory').value,
+                price: parseInt(document.getElementById('sellPrice').value),
+                details: document.getElementById('sellDescription').value,
+                image: document.getElementById('sellImage').value,
+                images: [document.getElementById('sellImage').value]
+            };
+
+            try {
+                await addDoc(collection(db, "products"), newProduct);
+                alert(Item "${newProduct.title}" has been listed successfully! 🎉);
+                closeSellModal();
+                document.getElementById('sellForm').reset();
+                fetchProducts(); // Re-fetch all products to show the new one
+            } catch (error) {
+                console.error("Error adding document: ", error);
+                alert("Sorry, there was an error listing your item. Please try again.");
+            }
+        });
+
+        window.searchProducts = () => {
+            const q = document.getElementById("search").value.toLowerCase();
+            renderProducts(products.filter(p => p.title.toLowerCase().includes(q) || p.category.toLowerCase().includes(q)));
+        }
+        document.getElementById("search").addEventListener("input", searchProducts);
+        
+        // Initial page load
+        fetchProducts();
+
+        // ==== PRICE BOT LOGIC (No changes needed here) ====
+        const API_KEY = ""; // PASTE YOUR GOOGLE AI GEMINI API KEY HERE
+        const API_URL = https://generativelanguage.googleapis.com/v1beta/models/gemini-1.5-flash:generateContent?key=${API_KEY};
+        const pricebotModal = document.getElementById("pricebotModal");
+        const chat = document.getElementById("chat");
+        const botInput = document.getElementById("botInput");
+        const sendBtn = document.getElementById("sendBtn");
+
+        window.openPriceBot = () => {
+            if (!API_KEY) {
+                alert("Price Bot is not configured. An API key is required.");
+                return;
+            }
+            pricebotModal.style.display = "flex";
+            if(chat.children.length === 0) {
+               appendMessage("Hello! I’m your EcoFinds Price Bot 🤖. Tell me a product and I'll give you a realistic secondhand price range.", "bot");
+            }
+            botInput.focus();
+        };
+
+        window.closePriceBot = () => pricebotModal.style.display = "none";
+
+        function appendMessage(text, sender) {
+            const messageBubble = document.createElement('div');
+            messageBubble.classList.add('chat-bubble');
+            messageBubble.innerHTML = <p>${text.replace(/\n/g, '<br>')}</p>;
+            messageBubble.classList.add(sender === 'bot' ? 'bot-msg' : 'user-msg');
+            chat.appendChild(messageBubble);
+            chat.scrollTop = chat.scrollHeight;
+        }
+
+        async function getBotResponse(prompt) {
+             const thinkingBubble = document.createElement('div');
+            thinkingBubble.classList.add('chat-bubble', 'bot-msg');
+            thinkingBubble.innerHTML = <p>Thinking...</p>;
+            chat.appendChild(thinkingBubble);
+            chat.scrollTop = chat.scrollHeight;
+
+            const systemPrompt = "You are a market price analyst for secondhand goods in India. Your purpose is to provide an estimated market price range for a used product. Your response must be friendly, helpful, and concise. Only provide a price range in INR and a very brief explanation.";
+            const payload = { contents: [{ parts: [{ text: prompt }] }], systemInstruction: { parts: [{ text: systemPrompt }] } };
+
+            try {
+                const response = await fetch(API_URL, { method: 'POST', headers: { 'Content-Type': 'application/json' }, body: JSON.stringify(payload) });
+                if (!response.ok) throw new Error(API error: ${response.statusText});
+                const result = await response.json();
+                const text = result.candidates?.[0]?.content?.parts?.[0]?.text;
+                chat.removeChild(thinkingBubble);
+                if (text) appendMessage(text, 'bot');
+                else throw new Error('No content in API response');
+            } catch (error) {
+                chat.removeChild(thinkingBubble);
+                console.error("API call failed:", error);
+                appendMessage("Sorry, I'm unable to get a price right now. Please check the API key or try again later.", 'bot');
+            }
+        }
+
+        async function sendMessage() {
+            const userMessage = botInput.value.trim();
+            if (userMessage === '') return;
+            appendMessage(userMessage, 'user');
+            botInput.value = '';
+            botInput.disabled = true;
+            sendBtn.disabled = true;
+            await getBotResponse(userMessage);
+            botInput.disabled = false;
+            sendBtn.disabled = false;
+            botInput.focus();
+        }
+
+        sendBtn.addEventListener('click', sendMessage);
+        botInput.addEventListener('keypress', (e) => {
+            if (e.key === 'Enter') sendMessage();
+        });
+    </script>
+</body>
+
+</html>
